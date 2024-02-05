@@ -11,6 +11,7 @@ void GXProject(f32 x, f32 y, f32 z, Mtx viewMtx, f32* projMtx, f32* viewport, f3
 	f32 f3;
 	f32 f5;
 	f32 f4;
+	
 	f1 = viewMtx[0][0] * x + viewMtx[0][1] * y + viewMtx[0][2] * z + viewMtx[0][3];
 	f2 = viewMtx[1][0] * x + viewMtx[1][1] * y + viewMtx[1][2] * z + viewMtx[1][3];
 	f3 = viewMtx[2][0] * x + viewMtx[2][1] * y + viewMtx[2][2] * z + viewMtx[2][3];
@@ -29,9 +30,13 @@ void GXProject(f32 x, f32 y, f32 z, Mtx viewMtx, f32* projMtx, f32* viewport, f3
 		f4 = f3 * projMtx[5] + projMtx[6];
 		f1 = 1.0f;
 	}
-	*screenX = viewport[0] + 0.5f * viewport[2] + viewport[2] * f1 * f5 * 0.5f;
-	*screenY = viewport[1] + 0.5f * viewport[3] + viewport[3] * -f2 * f1 * 0.5f;
+
+	f3 = viewport[3] + viewport[2] * f1 * f5 * 0.5f;
+
+	*screenX = (viewport[2] * 0.5f) + f3;//viewport[2] + viewport[2] * f1 * f5 * 0.5f;
+	*screenY = (viewport[1] * 0.5f) * viewport[3] + viewport[3] * -f2 * f1 + 0.5f;
 	*screenZ = (viewport[5] - viewport[4]) * f4 * f1 + viewport[5];
+	
 }
 
 /**
